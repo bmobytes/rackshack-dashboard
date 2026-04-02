@@ -1,0 +1,35 @@
+version: '3.8'
+
+services:
+  dashboard:
+    image: bmobytes/rackshack-dashboard:latest
+    container_name: rackshack-dashboard
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      - HOST=0.0.0.0
+      # Data paths inside container (from volumes below)
+      - VAULT_PATH=/data/vault
+      - WALLACE_PATH=/data/wallace
+      - STRATUM_VAULT_PATH=/data/vault/10_stratum/operations
+      # InfluxDB — token injected from env file
+      - INFLUX_URL=http://influxdb:8086
+      - INFLUX_ORG=bartos
+      - INFLUX_BUCKET=netdata
+      - INFLUX_TOKEN=${INFLUX_TOKEN}
+    volumes:
+      # Read-only data mounts — adjust host paths as needed
+      - /mnt/rackshack/wish/workspace/rackshack:/data/vault:ro
+      - /mnt/rackshack/wallace/workspace:/data/wallace:ro
+      - /mnt/rackshack/darkroom/workspace:/data/darkroom:ro
+    networks:
+      - rackshack-net
+    extra_hosts:
+      - "influxdb:192.168.148.185"
+
+networks:
+  rackshack-net:
+    driver: bridge

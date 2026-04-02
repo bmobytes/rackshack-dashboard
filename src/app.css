@@ -1,0 +1,23 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-rack-bg text-white font-mono;
+  }
+}
+
+@layer components {
+  .card {
+    @apply bg-rack-surface border border-rack-border rounded-lg p-4;
+  }
+
+  .status-dot {
+    @apply inline-block w-2 h-2 rounded-full;
+  }
+
+  .badge {
+    @apply inline-block px-2 py-0.5 rounded text-xs font-semibold uppercase tracking-wide;
+  }
+}
